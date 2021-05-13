@@ -1,4 +1,5 @@
-const { check, validationResult, oneOf, body } = require('express-validator');
+const { validationResult, body } = require('express-validator');
+const BadRequestError = require('../errors/bad-request-err');
 
 module.exports.validateMessage =
   [
@@ -14,14 +15,10 @@ module.exports.validateMessage =
   ];
 
 module.exports.checkValidation = (req, res, next) => {
-
   try {
     validationResult(req).throw();
-    console.log(validationResult(req));
-    // yay! we're good to start selling our skilled services :)))
     next();
   } catch (err) {
-    // Oh noes. This user doesn't have enough skills for this...
-    next(err);
+    next(new BadRequestError('Данные не валидны!'));
   }
 }
