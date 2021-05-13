@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const nodemailer  = require('nodemailer');
+const nodemailer = require('nodemailer');
 const { body, validationResult } = require('express-validator');
 const app = express();
 const port = 3000;
@@ -15,10 +15,10 @@ const transporter = nodemailer.createTransport({
   secure: true
 });
 
-app.use(cors({origin:"https://scnonstop.ru"}));
+app.use(cors({ origin: ["https://scnonstop.ru", "https://www.scnonstop.ru"] }));
 app.use(express.json());
 
-app.post('/api/mail', 
+app.post('/api/mail',
   body('appType').isLength({ max: 25 }).not().isEmpty().trim().escape(),
   body('appMark').isLength({ min: 2, max: 25 }).not().isEmpty().trim().escape(),
   body('problem').isLength({ min: 3, max: 250 }).not().isEmpty().trim().escape(),
@@ -30,9 +30,9 @@ app.post('/api/mail',
   body('policy').toBoolean(),
   (req, res) => {
     const validationErrors = validationResult(req);
-    if(!validationErrors.isEmpty()) {
-      return res.status(400).send({ message:'Что-то сломалось...'})
-    } 
+    if (!validationErrors.isEmpty()) {
+      return res.status(400).send({ message: 'Что-то сломалось...' })
+    }
     const { appType, appMark, problem, street, house, apartment, userName, phone, policy } = req.body;
     const text = `Тип техники: ${appType};
       Марка: ${appMark};
@@ -59,13 +59,13 @@ app.post('/api/mail',
     transporter.sendMail(mailData, (error, info) => {
       if (error) {
         console.log(error);
-        return res.status(500).send({ message:'Что-то сломалось...'})
+        return res.status(500).send({ message: 'Что-то сломалось...' })
       }
       res.status(200).send({ message: "Сообщение отправлено!" });
     });
   })
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.status(404).send('Sorry cant find that!');
 });
 
