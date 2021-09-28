@@ -5,6 +5,7 @@ const {
   PORT = 3001,
   EMAIL_ADDRESS = 'test@domain.zone',
   EMAIL_PASS = 'password',
+  ORIGIN,
 } = process.env;
 
 module.exports = {
@@ -12,4 +13,5 @@ module.exports = {
   PORT,
   EMAIL_ADDRESS,
   EMAIL_PASS,
+  ORIGIN,
 };

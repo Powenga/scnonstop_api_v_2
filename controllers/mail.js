@@ -1,13 +1,12 @@
-const { NODE_ENV, EMAIL_ADDRESS, EMAIL_PASS } = process.env;
-
 const nodemailer = require('nodemailer');
+const { NODE_ENV, EMAIL_ADDRESS, EMAIL_PASS } = require('../config');
 
 const transporter = nodemailer.createTransport({
   port: 465,
   host: 'smtp.beget.com',
   auth: {
-    user: `${NODE_ENV === 'production' ? EMAIL_ADDRESS : 'test@scnonstop.ru'}`,
-    pass: `${NODE_ENV === 'production' ? EMAIL_PASS : 'l90N25Y&'}`,
+    user: `${EMAIL_ADDRESS || 'test@example.com'}`,
+    pass: `${EMAIL_PASS || 'testpassword'}`,
   },
   secure: true,
 });
@@ -40,8 +39,8 @@ module.exports.sendMail = (req, res, next) => {
       <p>Телефон: ${phone};</p>
       <p>Согласие с Политикой конфиденциальности ${policy ? 'Да' : 'Нет'}.;</p>`;
   const mailData = {
-    from: 'order@scnonstop.ru',
-    to: 'order@scnonstop.ru',
+    from: `${EMAIL_ADDRESS || 'test@example.com'}`,
+    to: `${EMAIL_ADDRESS || 'test@example.com'}`,
     subject: 'Новый заказ',
     text,
     html,
