@@ -7,12 +7,14 @@ const { validateMessage, checkValidation } = require('./middlewares/validator');
 const NotFoundError = require('./errors/not-found-err');
 
 const {
-  PORT,
+  PORT, NODE_ENV, ORIGIN,
 } = require('./config');
 
 const app = express();
 
-app.use(cors({ origin: ['https://scnonstop.ru', 'https://www.scnonstop.ru'] }));
+app.use(cors({
+  origin: NODE_ENV === 'production' ? ORIGIN.split(' ') : 'http://localhost:3000',
+}));
 app.use(express.json());
 
 app.use(requestLogger);

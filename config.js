@@ -1,12 +1,14 @@
 require('dotenv').config();
 
 const {
-  PORT = 3000,
+  NODE_ENV = 'development',
+  PORT = 3001,
   EMAIL_ADDRESS = 'test@domain.zone',
   EMAIL_PASS = 'password',
 } = process.env;
 
 module.exports = {
+  NODE_ENV,
   PORT,
   EMAIL_ADDRESS,
   EMAIL_PASS,
