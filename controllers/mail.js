@@ -1,11 +1,12 @@
+const { NODE_ENV, EMAIL_ADDRESS, EMAIL_PASS } = process.env;
 const nodemailer = require('nodemailer');
-
+console.log(NODE_ENV);
 const transporter = nodemailer.createTransport({
   port: 465,
   host: "smtp.beget.com",
   auth: {
-    user: "order@scnonstop.ru",
-    pass: "29%kSKL&"
+    user: `${NODE_ENV === 'production' ? EMAIL_ADDRESS : 'test@scnonstop.ru'}`,
+    pass: `${NODE_ENV === 'production' ? EMAIL_PASS : 'l90N25Y&'}`
   },
   secure: true
 });
