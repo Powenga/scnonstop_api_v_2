@@ -1,12 +1,12 @@
-require('dotenv').config();
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const cors = require('cors');
 const express = require('express');
 const { sendMail } = require('./controllers/mail');
 const { validateMessage, checkValidation } = require('./middlewares/validator');
 const NotFoundError = require('./errors/not-found-err');
-
-const { PORT = 3000 } = process.env;
+const {
+  PORT
+} = require('./config')
 
 const app = express();
 
