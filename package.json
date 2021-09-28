@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "dev": "set NODE_ENV=develop&& nodemon app.js"
+    "dev": "set NODE_ENV=develop&& nodemon app.js",
+    "lint": "npx eslint ."
   },
   "author": "",
   "license": "ISC",
