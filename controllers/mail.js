@@ -3,7 +3,7 @@ const { NODE_ENV, EMAIL_ADDRESS, EMAIL_PASS } = require('../config');
 
 const transporter = nodemailer.createTransport({
   port: 465,
-  host: 'smtp.beget.com',
+  host: '1smtp.beget.com',
   auth: {
     user: `${EMAIL_ADDRESS || 'test@example.com'}`,
     pass: `${EMAIL_PASS || 'testpassword'}`,
@@ -45,10 +45,9 @@ module.exports.sendMail = (req, res, next) => {
     text,
     html,
   };
-  transporter.sendMail(mailData, (error, info) => {
-    if (error) {
-      next(new Error('Не удается отправить сообщение!'));
-    }
-    res.status(200).send({ message: 'Сообщение отправлено!' });
-  });
+  transporter.sendMail(mailData)
+    .then(() => res.status(200).send({ message: 'Сообщение отправлено!' }))
+    .catch((err) => {
+      next(err);
+    });
 };

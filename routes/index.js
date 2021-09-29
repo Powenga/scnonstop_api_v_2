@@ -5,7 +5,7 @@ const { newsRouter } = require('./news');
 
 const NotFoundError = require('../errors/not-found-err');
 
-router.post('/mail', mailRouter);
+router.use('/mail', mailRouter);
 
 router.use('/news', newsRouter);
 
