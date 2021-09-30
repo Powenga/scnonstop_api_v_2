@@ -3,7 +3,7 @@ const { EMAIL_ADDRESS, EMAIL_PASS } = require('../config');
 
 const transporter = nodemailer.createTransport({
   port: 465,
-  host: '1smtp.beget.com',
+  host: 'smtp.beget.com',
   auth: {
     user: `${EMAIL_ADDRESS || 'test@example.com'}`,
     pass: `${EMAIL_PASS || 'testpassword'}`,
