@@ -5,22 +5,28 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const router = require('./routes');
 
 const {
-  PORT, NODE_ENV, ORIGIN,
+  PORT,
+  NODE_ENV,
+  ORIGIN,
+  DB_NAME,
+  DB_USERNAME,
+  DB_PASSWORD,
+  DB_HOST,
 } = require('./config');
 
 const sequelize = new Sequelize({
-  database: 'scnonstop_main',
-  username: 'scnonstop_main',
-  password: 'JFL_8lHG4bnHVzk5UdWbYI9u1Qu7ud',
+  database: `${DB_NAME || 'db_name'}`,
+  username: `${DB_USERNAME || 'username'}`,
+  password: `${DB_PASSWORD || 'password'}`,
   dialect: 'mysql',
-  host: 'scnonstop.beget.tech',
+  host: `${DB_HOST || 'db_host'}`,
 });
+
+const app = express();
 
 sequelize.authenticate()
   .then(() => console.log('Connection has been established successfully.'))
-  .catch((error) => console.error('Unable to connect to the database:', error));
-
-const app = express();
+  .catch((error) => { throw new Error(error); });
 
 app.use(cors({
   origin: NODE_ENV === 'production' ? ORIGIN.split(' ') : 'http://localhost:3000',
