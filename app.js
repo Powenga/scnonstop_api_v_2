@@ -1,8 +1,10 @@
+const process = require('process');
 const express = require('express');
 const cors = require('cors');
 const { Sequelize } = require('sequelize');
-const { requestLogger, errorLogger } = require('./middlewares/logger');
+const { requestLogger, errorLogger, appErrorLogger } = require('./middlewares/logger');
 const router = require('./routes');
+const DBConnectionError = require('./errors/db-conntection-err');
 
 const {
   PORT,
@@ -14,6 +16,19 @@ const {
   DB_HOST,
 } = require('./config');
 
+// log shutdown errors
+process.on('uncaughtExceptionMonitor', (error) => {
+  appErrorLogger.error(error);
+});
+
+// log rejections and kill app with db connection error
+process.on('unhandledRejection', (error) => {
+  if (error instanceof DBConnectionError) {
+    throw error;
+  }
+  appErrorLogger.error(error);
+});
+
 const sequelize = new Sequelize({
   database: `${DB_NAME || 'db_name'}`,
   username: `${DB_USERNAME || 'username'}`,
@@ -22,15 +37,20 @@ const sequelize = new Sequelize({
   host: `${DB_HOST || 'db_host'}`,
 });
 
-const app = express();
-
 sequelize.authenticate()
-  .then(() => console.log('Connection has been established successfully.'))
-  .catch((error) => { throw new Error(error); });
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch((error) => {
+    throw new DBConnectionError(error.message);
+  });
+
+const app = express();
 
 app.use(cors({
   origin: NODE_ENV === 'production' ? ORIGIN.split(' ') : 'http://localhost:3000',
 }));
+
 app.use(express.json());
 
 app.use(requestLogger);

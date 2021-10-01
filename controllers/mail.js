@@ -1,15 +1,5 @@
-const nodemailer = require('nodemailer');
-const { EMAIL_ADDRESS, EMAIL_PASS } = require('../config');
-
-const transporter = nodemailer.createTransport({
-  port: 465,
-  host: 'smtp.beget.com',
-  auth: {
-    user: `${EMAIL_ADDRESS || 'test@example.com'}`,
-    pass: `${EMAIL_PASS || 'testpassword'}`,
-  },
-  secure: true,
-});
+const { transporter } = require('../utils/mail');
+const { EMAIL_ADDRESS } = require('../config');
 
 module.exports.sendOrder = (req, res, next) => {
   const {
@@ -77,3 +67,5 @@ module.exports.sendCallback = (req, res, next) => {
       next(err);
     });
 };
+
+module.exports.transporter = transporter;
