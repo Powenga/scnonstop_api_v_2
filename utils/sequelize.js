@@ -21,7 +21,7 @@ const News = sequelize.define('News', news);
 
 sequelize.authenticate()
   .then(() => {
-    sequelize.sync();
+    sequelize.sync({ alter: true });
   })
   .catch((error) => {
     throw new DBConnectionError(error.message);

@@ -1,6 +1,7 @@
 const process = require('process');
 const express = require('express');
 const cors = require('cors');
+const { errors } = require('celebrate');
 const { requestLogger, errorLogger, appErrorLogger } = require('./middlewares/logger');
 require('./utils/sequelize');
 const router = require('./routes');
@@ -38,7 +39,7 @@ app.use(requestLogger);
 app.use('/api', router);
 
 app.use(errorLogger);
-
+app.use(errors());
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
   if (res.headerSent) {
