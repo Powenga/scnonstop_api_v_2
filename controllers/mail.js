@@ -67,5 +67,3 @@ module.exports.sendCallback = (req, res, next) => {
       next(err);
     });
 };
-
-module.exports.transporter = transporter;

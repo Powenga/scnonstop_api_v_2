@@ -78,3 +78,34 @@ module.exports.sendOrderValidator = celebrate({
         }),
     }),
 });
+
+module.exports.sendCallbackValidator = celebrate({
+  body: Joi.object()
+    .keys({
+      userName: Joi.string().required().min(2).max(50)
+        .trim()
+        .messages({
+          'any.required': 'Поле "Имя" должно быть заполнено',
+          'string.empty': 'Поле "Имя" не может быть пустым',
+          'string.min': 'Поле "Имя" должно быть больше 2 символов"',
+          'string.max': 'Поле "Имя" должно быть меньше 50 символов"',
+        }),
+      phone: Joi.string().required().min(3).max(20)
+        .trim()
+        .messages({
+          'any.required': 'Поле "Телефон" должно быть заполнено',
+          'string.empty': 'Поле "Телефон" не может быть пустым',
+          'string.min': 'Поле "Телефон" должно быть больше 3 символов"',
+          'string.max': 'Поле "Телефон" должно быть меньше 20 символов"',
+        }),
+      policy: Joi.boolean().required()
+        .custom((policy) => {
+          if (policy !== true) throw new Error();
+        })
+        .messages({
+          'any.required': 'Вы должны согласиться с политикой конфиденциальности',
+          'boolean.base': 'Вы должны согласиться с политикой конфиденциальности',
+          'any.custom': 'Вы должны согласиться с политикой конфиденциальности',
+        }),
+    }),
+});
