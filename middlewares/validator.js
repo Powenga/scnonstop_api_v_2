@@ -1,4 +1,33 @@
 const { celebrate, Joi } = require('celebrate');
+const { validationResult, body } = require('express-validator');
+const BadRequestError = require('../errors/bad-request-err');
+
+const checkValidation = (req, res, next) => {
+  const errors = validationResult(req);
+  if (errors.isEmpty()) {
+    next();
+  } else {
+    console.log(errors.array());
+    next(new BadRequestError(`${errors.array().join(' ')}`));
+  }
+};
+module.exports.validateSendCallback = [
+  body('userName', 'Поле "Имя пользователя" не валидно')
+    .not()
+    .isEmpty()
+    .isLength({ min: 2, max: 25 })
+    .escape(),
+  body('phone', 'Поле "Телефон" не валидно')
+    .not()
+    .isEmpty()
+    .isLength({ min: 1, max: 25 })
+    .escape(),
+  body('policy', 'Вы должны согласиться с Политикой конфиденциальности')
+    .not()
+    .isEmpty()
+    .toBoolean(),
+  checkValidation,
+];
 
 module.exports.sendOrderValidator = celebrate({
   body: Joi.object()
