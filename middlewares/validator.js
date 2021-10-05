@@ -109,3 +109,37 @@ module.exports.sendCallbackValidator = celebrate({
         }),
     }),
 });
+
+module.exports.createNewsValidator = celebrate({
+  body: Joi.object()
+    .keys({
+      title: Joi.string().required().min(3).max(60)
+        .trim()
+        .messages({
+          'any.required': 'Поле "Заголовок" должно быть заполнено',
+          'string.empty': 'Поле "Заголовок" не может быть пустым',
+          'string.min': 'Поле "Заголовок" должно быть больше 3 символов"',
+          'string.max': 'Поле "Заголовок" должно быть меньше 60 символов"',
+        }),
+      date: Joi.date().required()
+        .messages({
+          'any.required': 'Поле "Дата" должно быть заполнено',
+          'date.base': 'Поле "Дата" не валидно',
+        }),
+      content: Joi.string().required().min(3).max(750)
+        .trim()
+        .messages({
+          'any.required': 'Поле "Текст" должно быть заполнено',
+          'string.empty': 'Поле "Текст" не может быть пустым',
+          'string.min': 'Поле "Текст" должно быть больше 3 символов"',
+          'string.max': 'Поле "Текст" должно быть меньше 750 символов"',
+        }),
+      link: Joi.string().required().uri()
+        .trim()
+        .messages({
+          'any.required': 'Поле "Ссылка" должно быть заполнено',
+          'string.empty': 'Поле "Ссылка" не может быть пустым',
+          'string.uri': 'Полe "Ссылка" не валидно',
+        }),
+    }),
+}, { error: { escapeHtml: false } });
