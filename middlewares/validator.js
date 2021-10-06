@@ -1,4 +1,3 @@
-const { celebrate, Joi } = require('celebrate');
 const { validationResult, body } = require('express-validator');
 const BadRequestError = require('../errors/bad-request-err');
 
@@ -81,7 +80,6 @@ module.exports.validateSendOrder = [
   validateUserData,
   validate,
 ];
-
 
 module.exports.validateNews = [
   body('title', 'Поле "Заголовок" не валидно')
