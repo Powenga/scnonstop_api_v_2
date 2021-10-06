@@ -1,8 +1,8 @@
 const router = require('express').Router();
 const { createNews } = require('../controllers/news');
-const { createNewsValidator } = require('../middlewares/validator');
+const { validateNews } = require('../middlewares/validator');
 
-router.post('/', createNewsValidator, createNews); // new
+router.post('/', validateNews, createNews); // new
 router.patch('/:id', () => {}); // update
 router.delete('/:id', () => {});
 
