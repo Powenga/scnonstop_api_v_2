@@ -1,5 +1,8 @@
-const BadRequestError = require('../errors/bad-request-err');
+const multer = require('multer');
 const { News } = require('../utils/sequelize');
+const BadRequestError = require('../errors/bad-request-err');
+
+const upload = multer({ dest: '../scnonstop_test_public_html/uploads' });
 
 module.exports.createNews = (req, res, next) => {
   const {
@@ -24,3 +27,10 @@ module.exports.createNews = (req, res, next) => {
       next(error);
     });
 };
+
+module.exports.updateNewsImage = [
+  upload.single('new-image'),
+  (req, res, next) => {
+    res.send('Файл сохранен');
+  },
+];

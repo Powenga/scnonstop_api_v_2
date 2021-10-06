@@ -4,6 +4,7 @@ const cors = require('cors');
 const { requestLogger, errorLogger, appErrorLogger } = require('./middlewares/logger');
 require('./utils/sequelize');
 const router = require('./routes');
+
 const DBConnectionError = require('./errors/db-conntection-err');
 
 const {
