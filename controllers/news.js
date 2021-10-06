@@ -19,7 +19,7 @@ module.exports.createNews = (req, res, next) => {
     .catch((error) => {
       console.log(error.name);
       if (error.name === 'SequelizeValidationError') {
-        next(new BadRequestError('Переданные данные не валидны!'));
+        next(new BadRequestError(error.message));
       }
       next(error);
     });
