@@ -91,7 +91,7 @@ module.exports.validateNews = [
   body('date', 'Поле "Дата" не валидно')
     .not()
     .isEmpty()
-    .isDate({ strictMode: true }),
+    .isDate({ strictMode: true, format: 'YYYY-MM-DD' }),
   body('content', 'Поле "Текс" не валидно')
     .not()
     .isEmpty()
