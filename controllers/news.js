@@ -21,7 +21,6 @@ module.exports.createNews = (req, res, next) => {
   })
     .then((data) => res.status(201).send({ id: data.id }))
     .catch((error) => {
-      console.log(error.name);
       if (error.name === 'SequelizeValidationError') {
         next(new BadRequestError(error.message));
       }
@@ -31,14 +30,14 @@ module.exports.createNews = (req, res, next) => {
 
 module.exports.updateNewsImage = [
   (req, res, next) => {
-    const news = News.findAll({
+    News.findAll({
       where: {
         id: req.params.id,
       },
     })
       .then((data) => {
         if (data && data.length !== 0) {
-          res.locals.news = data;
+          [res.locals.news] = data;
           next();
         } else if (data.length === 0) {
           next(new HostNotFoundError('Новость не найдена!'));
@@ -52,6 +51,15 @@ module.exports.updateNewsImage = [
   (req, res, next) => {
     const { news } = res.locals;
     news.link = `${UPLOAD_FOLDER_PATH}/${NEWS_IMAGE_FOLDER}/${req.file.filename}`;
-    res.send(news.link);
+    news.save()
+      .then((data) => {
+        const {
+          id, title, date, content, link,
+        } = data;
+        res.status(200).send({
+          id, title, date, content, link,
+        });
+      })
+      .catch(next);
   },
 ];

@@ -24,6 +24,5 @@ module.exports.news = {
   },
   link: {
     type: DataTypes.STRING,
-    allowNull: false,
   },
 };
