@@ -20,9 +20,9 @@ const filetypeList = ACCEPTED_FILE_TYPES;
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     if (file.fieldname === NEWS_IMAGE_FIELDNAME) {
-      cb(null, `${uploadPath}${NEWS_IMAGE_FOLDER}`);
+      cb(null, `${uploadPath}/${NEWS_IMAGE_FOLDER}`);
     } else if (file.fieldname === SPECIALIST_IMAGE_FIELDNAME) {
-      cb(null, `${uploadPath}${SPECIALIST_IMAGE_FOLDER}`);
+      cb(null, `${uploadPath}/${SPECIALIST_IMAGE_FOLDER}`);
     } else {
       cb(new BadRequestError('Ошибка передачи файлов'));
     }

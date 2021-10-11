@@ -11,6 +11,7 @@ const {
   DB_PASSWORD,
   DB_HOST,
   UPLOAD_FILE_FOLDER,
+  UPLOAD_FOLDER_PATH,
 } = process.env;
 
 const ACCEPTED_FILE_TYPES = /jpeg|jpg|png|gif/;
@@ -18,9 +19,9 @@ const MAX_FILE_FORM_FILES = 1;
 const MAX_MULTIPART_FORM_FIELDS = 1;
 const MAX_FILE_SIZE = 5E6;
 const NEWS_IMAGE_FIELDNAME = 'news-image';
-const NEWS_IMAGE_FOLDER = `/${NEWS_IMAGE_FIELDNAME}`;
+const NEWS_IMAGE_FOLDER = `${NEWS_IMAGE_FIELDNAME}`;
 const SPECIALIST_IMAGE_FIELDNAME = 'specialist-avatar';
-const SPECIALIST_IMAGE_FOLDER = '/specialists';
+const SPECIALIST_IMAGE_FOLDER = 'specialists';
 
 module.exports = {
   NODE_ENV,
@@ -41,4 +42,5 @@ module.exports = {
   NEWS_IMAGE_FOLDER,
   SPECIALIST_IMAGE_FIELDNAME,
   SPECIALIST_IMAGE_FOLDER,
+  UPLOAD_FOLDER_PATH,
 };

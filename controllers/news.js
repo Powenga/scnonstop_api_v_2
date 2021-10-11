@@ -3,6 +3,7 @@ const { upload } = require('../utils/file-upload');
 
 const BadRequestError = require('../errors/bad-request-err');
 const HostNotFoundError = require('../errors/not-found-err');
+const { UPLOAD_FOLDER_PATH, NEWS_IMAGE_FOLDER } = require('../config');
 
 module.exports.createNews = (req, res, next) => {
   const {
@@ -30,13 +31,14 @@ module.exports.createNews = (req, res, next) => {
 
 module.exports.updateNewsImage = [
   (req, res, next) => {
-    News.findAll({
+    const news = News.findAll({
       where: {
         id: req.params.id,
       },
     })
       .then((data) => {
         if (data && data.length !== 0) {
+          res.locals.news = data;
           next();
         } else if (data.length === 0) {
           next(new HostNotFoundError('Новость не найдена!'));
@@ -48,7 +50,8 @@ module.exports.updateNewsImage = [
   },
   upload.single('news-image'),
   (req, res, next) => {
-    console.log(req.params);
-    res.send({ filename: req.filename });
+    const { news } = res.locals;
+    news.link = `${UPLOAD_FOLDER_PATH}/${NEWS_IMAGE_FOLDER}/${req.file.filename}`;
+    res.send(news.link);
   },
 ];
