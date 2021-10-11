@@ -29,6 +29,6 @@ module.exports.createNews = (req, res, next) => {
 module.exports.updateNewsImage = [
   upload.single('news-image'),
   (req, res, next) => {
-    res.send(req.file);
+    res.send({filename: req.filename});
   },
 ];
