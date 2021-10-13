@@ -98,6 +98,8 @@ module.exports.validateNews = [
     .isLength({ min: 1, max: 750 })
     .trim()
     .escape(),
+  body('link', 'Поле "Cсылка" не должно быть заполнено!')
+    .isEmpty(),
   validate,
 ];
 
