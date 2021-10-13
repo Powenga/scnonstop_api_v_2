@@ -84,3 +84,13 @@ module.exports.updateNews = [
     saveNews(news, res, next);
   },
 ];
+
+module.exports.deleteNews = [
+  checkNews,
+  (req, res, next) => {
+    const { news } = res.locals;
+    news.destroy()
+      .then(() => res.send({ message: 'Новость удалена!' }))
+      .catch(next);
+  },
+];
