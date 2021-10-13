@@ -2,7 +2,7 @@ const { News } = require('../utils/sequelize');
 const { upload } = require('../utils/file-upload');
 
 const BadRequestError = require('../errors/bad-request-err');
-const HostNotFoundError = require('../errors/not-found-err');
+const NotFoundError = require('../errors/not-found-err');
 const { UPLOAD_FOLDER_PATH, NEWS_IMAGE_FOLDER } = require('../config');
 
 function checkNews(req, res, next) {
@@ -16,7 +16,7 @@ function checkNews(req, res, next) {
         [res.locals.news] = data;
         next();
       } else if (data.length === 0) {
-        next(new HostNotFoundError('Новость не найдена!'));
+        next(new NotFoundError('Новость не найдена!'));
       } else {
         next(new Error());
       }
@@ -53,7 +53,7 @@ module.exports.getAllNews = (req, res, next) => {
         }));
         res.status(200).send(sendNews);
       } else if (news.length === 0) {
-        next(new HostNotFoundError('Новости не найдены!'));
+        next(new NotFoundError('Новости не найдены!'));
       } else {
         next(new Error());
       }
