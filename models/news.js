@@ -24,5 +24,8 @@ module.exports.news = {
   },
   link: {
     type: DataTypes.STRING,
+    // validate: {
+    //   isUrl: true,
+    // },
   },
 };
