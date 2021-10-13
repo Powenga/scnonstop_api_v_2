@@ -42,6 +42,25 @@ function saveNews(news, res, next) {
     .catch(next);
 }
 
+module.exports.getAllNews = (req, res, next) => {
+  News.findAll()
+    .then((news) => {
+      if (news && news.length !== 0) {
+        const sendNews = news.map(({
+          id, title, date, content, link,
+        }) => ({
+          id, title, date, content, link,
+        }));
+        res.status(200).send(sendNews);
+      } else if (news.length === 0) {
+        next(new HostNotFoundError('Новости не найдены!'));
+      } else {
+        next(new Error());
+      }
+    })
+    .catch(next);
+};
+
 module.exports.createNews = (req, res, next) => {
   const {
     title, date, content,
