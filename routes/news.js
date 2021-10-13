@@ -1,10 +1,10 @@
 const router = require('express').Router();
-const { createNews, updateNewsImage } = require('../controllers/news');
+const { createNews, updateNewsImage, updateNews } = require('../controllers/news');
 const { validateNews } = require('../middlewares/validator');
 
-router.post('/', validateNews, createNews); // new
+router.post('/', validateNews, createNews);
 router.patch('/:id/image', updateNewsImage);
-// router.patch('/:id', () => {}); // update
+router.patch('/:id', validateNews, updateNews);
 router.delete('/:id', () => {});
 
 module.exports.newsRouter = router;

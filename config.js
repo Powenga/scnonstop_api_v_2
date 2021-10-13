@@ -16,7 +16,7 @@ const {
 
 const ACCEPTED_FILE_TYPES = /jpeg|jpg|png|gif/;
 const MAX_FILE_FORM_FILES = 1;
-const MAX_MULTIPART_FORM_FIELDS = 1;
+const MAX_MULTIPART_FORM_FIELDS = 0;
 const MAX_FILE_SIZE = 5E6;
 const NEWS_IMAGE_FIELDNAME = 'news-image';
 const NEWS_IMAGE_FOLDER = `${NEWS_IMAGE_FIELDNAME}`;
