@@ -1,4 +1,4 @@
-const { validationResult, body } = require('express-validator');
+const { validationResult, body, param } = require('express-validator');
 const BadRequestError = require('../errors/bad-request-err');
 
 const validate = (req, res, next) => {
@@ -97,6 +97,15 @@ module.exports.validateNews = [
     .isEmpty()
     .isLength({ min: 1, max: 750 })
     .trim()
+    .escape(),
+  validate,
+];
+
+module.exports.validateID = [
+  param('id', 'ID новости не валиден')
+    .not()
+    .isEmpty()
+    .isInt({ min: 1, max: 2147483648 })
     .escape(),
   validate,
 ];
