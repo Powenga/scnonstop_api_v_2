@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 
-module.exports.specialists = {
+module.exports.specialist = {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
