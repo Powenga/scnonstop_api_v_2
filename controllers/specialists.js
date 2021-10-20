@@ -3,7 +3,7 @@ const { upload } = require('../utils/file-upload');
 
 const BadRequestError = require('../errors/bad-request-err');
 const NotFoundError = require('../errors/not-found-err');
-const { UPLOAD_FOLDER_PATH, NEWS_IMAGE_FOLDER } = require('../config');
+const { UPLOAD_FOLDER_PATH, SPECIALIST_IMAGE_FOLDER } = require('../config');
 
 function checkSpecialist(req, res, next) {
   Specialists.findAll({
@@ -13,10 +13,10 @@ function checkSpecialist(req, res, next) {
   })
     .then((data) => {
       if (data && data.length !== 0) {
-        [res.locals.news] = data;
+        [res.locals.specialist] = data;
         next();
       } else if (data.length === 0) {
-        next(new NotFoundError('Новость не найдена!'));
+        next(new NotFoundError('Специалист не найден!'));
       } else {
         next(new Error());
       }
@@ -24,36 +24,36 @@ function checkSpecialist(req, res, next) {
     .catch(next);
 }
 
-function saveNews(news, res, next) {
-  news
+function saveSpecialist(specialists, res, next) {
+  specialists
     .save()
     .then((data) => {
       const {
-        id, title, date, content, link,
+        id, name, age, about, link,
       } = data;
       res.status(200).send({
         id,
-        title,
-        date,
-        content,
+        name,
+        age,
+        about,
         link,
       });
     })
     .catch(next);
 }
 
-module.exports.getAllNews = (req, res, next) => {
-  News.findAll()
-    .then((news) => {
-      if (news && news.length !== 0) {
-        const sendNews = news.map(({
-          id, title, date, content, link,
+module.exports.getAllSpecialist = (req, res, next) => {
+  Specialists.findAll()
+    .then((specialists) => {
+      if (specialists && specialists.length !== 0) {
+        const sendNews = specialists.map(({
+          id, name, age, about, link,
         }) => ({
-          id, title, date, content, link,
+          id, name, age, about, link,
         }));
         res.status(200).send(sendNews);
-      } else if (news.length === 0) {
-        next(new NotFoundError('Новости не найдены!'));
+      } else if (specialists.length === 0) {
+        next(new NotFoundError('Специалисты не найдены!'));
       } else {
         next(new Error());
       }
@@ -61,15 +61,15 @@ module.exports.getAllNews = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.createNews = (req, res, next) => {
+module.exports.createSpecialist = (req, res, next) => {
   const {
-    title, date, content,
+    name, age, about,
   } = req.body;
 
-  News.create({
-    title,
-    date,
-    content,
+  Specialists.create({
+    name,
+    age,
+    about,
   })
     .then((data) => res.status(201).send({ id: data.id }))
     .catch((error) => {
@@ -80,36 +80,36 @@ module.exports.createNews = (req, res, next) => {
     });
 };
 
-module.exports.updateNewsImage = [
-  checkNews,
-  upload.single('news-image'),
+module.exports.updateSpecialistImage = [
+  checkSpecialist,
+  upload.single('specialist-image'),
   (req, res, next) => {
-    const { news } = res.locals;
-    news.link = `${UPLOAD_FOLDER_PATH}/${NEWS_IMAGE_FOLDER}/${req.file.filename}`;
-    saveNews(news, res, next);
+    const { specialist } = res.locals;
+    specialist.link = `${UPLOAD_FOLDER_PATH}/${SPECIALIST_IMAGE_FOLDER}/${req.file.filename}`;
+    saveSpecialist(specialist, res, next);
   },
 ];
 
 module.exports.updateNews = [
-  checkNews,
+  checkSpecialist,
   (req, res, next) => {
     const {
-      title, date, content,
+      name, age, about,
     } = req.body;
-    const { news } = res.locals;
-    news.title = title;
-    news.date = date;
-    news.content = content;
-    saveNews(news, res, next);
+    const { specialist } = res.locals;
+    specialist.name = name;
+    specialist.age = age;
+    specialist.about = about;
+    saveSpecialist(specialist, res, next);
   },
 ];
 
 module.exports.deleteNews = [
-  checkNews,
+  checkSpecialist,
   (req, res, next) => {
-    const { news } = res.locals;
-    news.destroy()
-      .then(() => res.send({ message: 'Новость удалена!' }))
+    const { specialist } = res.locals;
+    specialist.destroy()
+      .then(() => res.send({ message: 'Данне о специалисте удалены!' }))
       .catch(next);
   },
 ];
