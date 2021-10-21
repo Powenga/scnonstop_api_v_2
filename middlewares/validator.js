@@ -107,7 +107,7 @@ module.exports.validateSpecialist = [
   body('name', 'Поле "Имя" не валидно')
     .not()
     .isEmpty()
-    .isLength({ min: 3, max: 60 })
+    .isLength({ min: 2, max: 60 })
     .trim()
     .escape(),
   body('age', 'Поле "Возраст" не валидно')
@@ -117,7 +117,7 @@ module.exports.validateSpecialist = [
   body('about', 'Поле "Описание" не валидно')
     .not()
     .isEmpty()
-    .isLength({ min: 1, max: 250 })
+    .isLength({ min: 3, max: 250 })
     .trim()
     .escape(),
   body('link', 'Поле "Cсылка" не должно быть заполнено!')

@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const {
-  getAllSpecialist,
+  getAllSpecialists,
   createSpecialist,
   updateSpecialistImage,
   updateSpecialist,
@@ -8,7 +8,7 @@ const {
 } = require('../controllers/specialists');
 const { validateID, validateSpecialist } = require('../middlewares/validator');
 
-router.get('/', getAllSpecialist);
+router.get('/', getAllSpecialists);
 router.post('/', validateSpecialist, createSpecialist);
 router.patch('/:id/image', validateID, updateSpecialistImage);
 router.patch('/:id', validateID, validateSpecialist, updateSpecialist);

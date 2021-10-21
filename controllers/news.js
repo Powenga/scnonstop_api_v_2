@@ -3,7 +3,7 @@ const { upload } = require('../utils/file-upload');
 
 const BadRequestError = require('../errors/bad-request-err');
 const NotFoundError = require('../errors/not-found-err');
-const { UPLOAD_FOLDER_PATH, NEWS_IMAGE_FOLDER } = require('../config');
+const { UPLOAD_FOLDER_PATH, NEWS_IMAGE_FOLDER, NEWS_IMAGE_FIELDNAME } = require('../config');
 
 function checkNews(req, res, next) {
   News.findAll({
@@ -82,7 +82,7 @@ module.exports.createNews = (req, res, next) => {
 
 module.exports.updateNewsImage = [
   checkNews,
-  upload.single('news-image'),
+  upload.single(NEWS_IMAGE_FIELDNAME),
   (req, res, next) => {
     const { news } = res.locals;
     news.link = `${UPLOAD_FOLDER_PATH}/${NEWS_IMAGE_FOLDER}/${req.file.filename}`;

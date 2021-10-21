@@ -1,12 +1,12 @@
-const { Specialists } = require('../utils/sequelize');
+const { Specialist } = require('../utils/sequelize');
 const { upload } = require('../utils/file-upload');
 
 const BadRequestError = require('../errors/bad-request-err');
 const NotFoundError = require('../errors/not-found-err');
-const { UPLOAD_FOLDER_PATH, SPECIALIST_IMAGE_FOLDER } = require('../config');
+const { UPLOAD_FOLDER_PATH, SPECIALIST_IMAGE_FOLDER, SPECIALIST_IMAGE_FIELDNAME } = require('../config');
 
 function checkSpecialist(req, res, next) {
-  Specialists.findAll({
+  Specialist.findAll({
     where: {
       id: req.params.id,
     },
@@ -24,8 +24,8 @@ function checkSpecialist(req, res, next) {
     .catch(next);
 }
 
-function saveSpecialist(specialists, res, next) {
-  specialists
+function saveSpecialist(specialist, res, next) {
+  specialist
     .save()
     .then((data) => {
       const {
@@ -42,8 +42,8 @@ function saveSpecialist(specialists, res, next) {
     .catch(next);
 }
 
-module.exports.getAllSpecialist = (req, res, next) => {
-  Specialists.findAll()
+module.exports.getAllSpecialists = (req, res, next) => {
+  Specialist.findAll()
     .then((specialists) => {
       if (specialists && specialists.length !== 0) {
         const sendNews = specialists.map(({
@@ -66,7 +66,7 @@ module.exports.createSpecialist = (req, res, next) => {
     name, age, about,
   } = req.body;
 
-  Specialists.create({
+  Specialist.create({
     name,
     age,
     about,
@@ -82,7 +82,7 @@ module.exports.createSpecialist = (req, res, next) => {
 
 module.exports.updateSpecialistImage = [
   checkSpecialist,
-  upload.single('specialist-image'),
+  upload.single(SPECIALIST_IMAGE_FIELDNAME),
   (req, res, next) => {
     const { specialist } = res.locals;
     specialist.link = `${UPLOAD_FOLDER_PATH}/${SPECIALIST_IMAGE_FOLDER}/${req.file.filename}`;
@@ -90,7 +90,7 @@ module.exports.updateSpecialistImage = [
   },
 ];
 
-module.exports.updateNews = [
+module.exports.updateSpecialist = [
   checkSpecialist,
   (req, res, next) => {
     const {
@@ -104,12 +104,12 @@ module.exports.updateNews = [
   },
 ];
 
-module.exports.deleteNews = [
+module.exports.deleteSpecialist = [
   checkSpecialist,
   (req, res, next) => {
     const { specialist } = res.locals;
     specialist.destroy()
-      .then(() => res.send({ message: 'Данне о специалисте удалены!' }))
+      .then(() => res.send({ message: 'Данные о специалисте удалены!' }))
       .catch(next);
   },
 ];

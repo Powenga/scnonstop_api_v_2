@@ -16,7 +16,7 @@ module.exports.specialist = {
     },
   },
   about: {
-    type: DataTypes.TEXT,
+    type: DataTypes.STRING,
     allowNull: false,
     validate: {
       len: [3, 250],
