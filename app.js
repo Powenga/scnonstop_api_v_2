@@ -1,6 +1,8 @@
 const process = require('process');
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
+const cookieParser = require('cookie-parser');
 const { requestLogger, errorLogger, appErrorLogger } = require('./middlewares/logger');
 require('./utils/sequelize');
 const router = require('./routes');
@@ -32,6 +34,8 @@ app.use(cors({
   origin: NODE_ENV === 'production' ? ORIGIN.split(' ') : 'http://localhost:3000',
 }));
 
+app.use(helmet());
+app.use(cookieParser());
 app.use(express.json());
 
 app.use(requestLogger);

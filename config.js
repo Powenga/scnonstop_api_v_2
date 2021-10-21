@@ -12,6 +12,7 @@ const {
   DB_HOST,
   UPLOAD_FILE_FOLDER,
   UPLOAD_FOLDER_PATH,
+  JWT_TOKEN,
 } = process.env;
 
 const ACCEPTED_FILE_TYPES = /jpeg|jpg|png|gif/;
@@ -22,6 +23,7 @@ const NEWS_IMAGE_FIELDNAME = 'news-image';
 const NEWS_IMAGE_FOLDER = NEWS_IMAGE_FIELDNAME;
 const SPECIALIST_IMAGE_FIELDNAME = 'specialist-avatar';
 const SPECIALIST_IMAGE_FOLDER = 'specialists';
+const DEV_SECRET_KEY = 'some-secret-key';
 
 module.exports = {
   NODE_ENV,
@@ -43,4 +45,6 @@ module.exports = {
   SPECIALIST_IMAGE_FIELDNAME,
   SPECIALIST_IMAGE_FOLDER,
   UPLOAD_FOLDER_PATH,
+  JWT_TOKEN,
+  DEV_SECRET_KEY,
 };
