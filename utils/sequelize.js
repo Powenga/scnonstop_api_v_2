@@ -1,6 +1,7 @@
 const { Sequelize } = require('sequelize');
 const { news } = require('../models/news');
 const { specialist } = require('../models/specialist');
+const { user } = require('../models/user');
 const DBConnectionError = require('../errors/db-conntection-err');
 
 const {
@@ -20,6 +21,7 @@ const sequelize = new Sequelize({
 
 const News = sequelize.define('News', news);
 const Specialist = sequelize.define('Specialist', specialist);
+const User = sequelize.define('User', user);
 
 sequelize.authenticate()
   .then(() => {
@@ -29,4 +31,4 @@ sequelize.authenticate()
     throw new DBConnectionError(error.message);
   });
 
-module.exports = { News, Specialist };
+module.exports = { News, Specialist, User };
