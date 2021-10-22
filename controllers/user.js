@@ -26,10 +26,10 @@ const {
 
 function signToken(user) {
   return jwt.sign(
-    { id: user.id, updateDate: user.updatedAt },
+    { id: user.id, mark: user.mark },
     NODE_ENV === 'production' ? JWT_TOKEN : DEV_SECRET_KEY,
     {
-      expiresIn: '7d',
+      expiresIn: '14d',
     },
   );
 }
@@ -52,22 +52,20 @@ module.exports.login = (req, res, next) => {
         return bcrypt.compare(password, user.password)
           .then((matched) => {
             if (!matched) {
-              console.log('мы тут');
               throw new Unauthorized(USER_UNAUTHORIZED_MESSAGE);
             }
             return user;
           });
       })
       .then((user) => {
-        const { id, mark } = user;
-        const token = signToken({ id, mark });
+        const token = signToken(user);
         res
           .cookie('jwt', token, {
             maxAge: 3600000 * 24 * 7,
             httpOnly: true,
             sameSite: true,
           })
-          .send({ id, email: user.email });
+          .send({ id: user.id, email: user.email });
       })
       .catch(next);
   }
