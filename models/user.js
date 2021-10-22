@@ -15,4 +15,11 @@ module.exports.news = {
       len: [1, 0],
     },
   },
+  mark: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      len: [6, 6],
+    },
+  },
 };

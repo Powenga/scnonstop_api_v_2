@@ -25,6 +25,8 @@ const SPECIALIST_IMAGE_FIELDNAME = 'specialist-avatar';
 const SPECIALIST_IMAGE_FOLDER = 'specialists';
 const DEV_SECRET_KEY = 'some-secret-key';
 
+const SALT_ROUNDS = 10;
+
 module.exports = {
   NODE_ENV,
   PORT,
@@ -47,4 +49,5 @@ module.exports = {
   UPLOAD_FOLDER_PATH,
   JWT_TOKEN,
   DEV_SECRET_KEY,
+  SALT_ROUNDS,
 };
