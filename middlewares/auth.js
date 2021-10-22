@@ -4,6 +4,7 @@ const {
   DEV_SECRET_KEY,
   NODE_ENV,
 } = require('../config');
+const { User } = require('../utils/sequelize');
 
 module.exports = (req, res, next) => {
   const token = req.cookies.jwt;
@@ -22,7 +23,17 @@ module.exports = (req, res, next) => {
     return res.status(401).send({ message: 'Неоходима авторизация!' });
   }
 
-  req.user = payload;
-
-  return next();
+  return User.findAll({
+    where: {
+      id: payload.id,
+    },
+  })
+    .then((user) => {
+      if (user && user.length !== 0 && user.mark === payload.mark) {
+        req.user = payload;
+        return next();
+      }
+      return Promise.reject();
+    })
+    .catch(() => res.status(401).send({ message: 'Неоходима авторизация!' }));
 };
