@@ -43,7 +43,6 @@ module.exports.sendOrder = (req, res, next) => {
 };
 
 module.exports.sendCallback = (req, res, next) => {
-  console.log(req.body);
   const {
     userName,
     phone,
@@ -64,6 +63,25 @@ module.exports.sendCallback = (req, res, next) => {
   };
   transporter.sendMail(mailData)
     .then(() => res.status(200).send({ message: 'Сообщение отправлено!' }))
+    .catch((err) => {
+      next(err);
+    });
+};
+
+module.exports.sendLoginInfo = (req, res, next) => {
+  const text = `На сайте scnonstop.ru выполнен вход ${new Date()};
+    Если это были не Вы - смените пароль!`;
+  const html = `<p>На сайте scnonstop.ru выполнен вход ${new Date()}</p>
+  <p>Если это были не Вы - смените пароль!</p>`;
+  const mailData = {
+    from: `${EMAIL_ADDRESS || 'test@example.com'}`,
+    to: `${EMAIL_ADDRESS || 'test@example.com'}`,
+    subject: 'Новая авторизация на сайте',
+    text,
+    html,
+  };
+  transporter.sendMail(mailData)
+    .then()
     .catch((err) => {
       next(err);
     });

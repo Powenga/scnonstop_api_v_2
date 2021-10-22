@@ -66,6 +66,7 @@ module.exports.login = (req, res, next) => {
             sameSite: true,
           })
           .send({ id: user.id, email: user.email });
+        next();
       })
       .catch(next);
   }

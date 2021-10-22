@@ -5,10 +5,11 @@ const { newsRouter } = require('./news');
 const { specialistsRouter } = require('./specialists');
 
 const { login } = require('../controllers/user');
+const { sendLoginInfo } = require('../controllers/mail');
 
 const NotFoundError = require('../errors/not-found-err');
 
-router.post('/signin', login);
+router.post('/signin', login, sendLoginInfo);
 
 router.use('/mail', mailRouter);
 
