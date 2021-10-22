@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 
-module.exports.news = {
+module.exports.user = {
   email: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -13,6 +13,12 @@ module.exports.news = {
     allowNull: false,
     validate: {
       len: [1, 0],
+    },
+  },
+  role: {
+    type: DataTypes.STRING,
+    validate: {
+      isIn: [['owner']],
     },
   },
   mark: {

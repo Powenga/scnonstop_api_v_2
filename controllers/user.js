@@ -34,23 +34,25 @@ function signToken(user) {
   );
 }
 
-// Only for
-module.exports.createUser = (req, res, next) => {
-  const { email, password, name } = req.body;
-  if (!email || !name || !password) {
-    next(new BadRequestError(USER_DATA_IS_MISSING_MESSAGE));
-  } else {
-    bcrypt
-      .hash(password, SALT_ROUNDS)
-      .then((hash) => User.create({ email, password: hash, mark: getRandomString(6) }))
-      .then(() => {
-        console.log('Пользователь успешно создан');
-      })
-      .catch((err) => {
-        next(err);
-      });
-  }
+const findUser = (id) => {
+  User.findAll({
+    where: {
+      id,
+    },
+  })
+    .then((user) => {
+      if (user.length === 0) {
+        return new NotFoundError('Пользователь не найден!');
+      }
+      if (user && user.length !== 0) {
+        return { id: user.id, mark: user.mark, role: user.role };
+      }
+      return new Error();
+    })
+    .catch((error) => new Error(error.message));
 };
+
+module.exports = { findUser };
 
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
