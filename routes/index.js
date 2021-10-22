@@ -4,7 +4,11 @@ const { mailRouter } = require('./mail');
 const { newsRouter } = require('./news');
 const { specialistsRouter } = require('./specialists');
 
+const { login } = require('../controllers/user');
+
 const NotFoundError = require('../errors/not-found-err');
+
+router.post('/signin', login);
 
 router.use('/mail', mailRouter);
 

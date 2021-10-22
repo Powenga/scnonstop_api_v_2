@@ -46,12 +46,12 @@ module.exports.getAllNews = (req, res, next) => {
   News.findAll()
     .then((news) => {
       if (news && news.length !== 0) {
-        const sendNews = news.map(({
+        const sendingData = news.map(({
           id, title, date, content, link,
         }) => ({
           id, title, date, content, link,
         }));
-        res.status(200).send(sendNews);
+        res.status(200).send(sendingData);
       } else if (news.length === 0) {
         next(new NotFoundError('Новости не найдены!'));
       } else {

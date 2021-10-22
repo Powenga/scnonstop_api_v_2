@@ -27,8 +27,10 @@ module.exports = (req, res, next) => {
     where: {
       id: payload.id,
     },
+    attributes: ['id', 'mark'],
   })
     .then((user) => {
+      console.log(user);
       if (user && user.length !== 0 && user.mark === payload.mark) {
         req.user = payload;
         return next();

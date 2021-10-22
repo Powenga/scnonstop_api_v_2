@@ -34,50 +34,40 @@ function signToken(user) {
   );
 }
 
-const findUser = (id) => {
-  User.findAll({
-    where: {
-      id,
-    },
-  })
-    .then((user) => {
-      if (user.length === 0) {
-        return new NotFoundError('Пользователь не найден!');
-      }
-      if (user && user.length !== 0) {
-        return { id: user.id, mark: user.mark, role: user.role };
-      }
-      return new Error();
-    })
-    .catch((error) => new Error(error.message));
-};
-
-module.exports = { findUser };
-
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) {
     next(new BadRequestError(USER_DATA_IS_MISSING_MESSAGE));
   } else {
-    User.findOne({ email })
-      .select('+password')
-      .orFail(new Unauthorized(USER_UNAUTHORIZED_MESSAGE))
-      .then((user) => bcrypt.compare(password, user.password)
-        .then((matched) => {
-          if (!matched) {
-            throw new Unauthorized(USER_UNAUTHORIZED_MESSAGE);
-          }
-          return user;
-        }))
+    User.findAll({
+      where: {
+        email,
+      },
+    })
+      .then((users) => {
+        if (users.length === 0 || users.length > 1) {
+          throw new Unauthorized(USER_UNAUTHORIZED_MESSAGE);
+        }
+        const user = users[0];
+        return bcrypt.compare(password, user.password)
+          .then((matched) => {
+            if (!matched) {
+              console.log('мы тут');
+              throw new Unauthorized(USER_UNAUTHORIZED_MESSAGE);
+            }
+            return user;
+          });
+      })
       .then((user) => {
-        const token = signToken(user);
+        const { id, mark } = user;
+        const token = signToken({ id, mark });
         res
           .cookie('jwt', token, {
             maxAge: 3600000 * 24 * 7,
             httpOnly: true,
             sameSite: true,
           })
-          .send({ name: user.name, email: user.email, userId: user._id });
+          .send({ id, email: user.email });
       })
       .catch(next);
   }

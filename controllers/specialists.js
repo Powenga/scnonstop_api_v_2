@@ -46,12 +46,12 @@ module.exports.getAllSpecialists = (req, res, next) => {
   Specialist.findAll()
     .then((specialists) => {
       if (specialists && specialists.length !== 0) {
-        const sendNews = specialists.map(({
+        const sendingData = specialists.map(({
           id, name, age, about, link,
         }) => ({
           id, name, age, about, link,
         }));
-        res.status(200).send(sendNews);
+        res.status(200).send(sendingData);
       } else if (specialists.length === 0) {
         next(new NotFoundError('Специалисты не найдены!'));
       } else {
