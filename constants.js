@@ -8,6 +8,7 @@ const USER_ALREADY_EXIST_MESSAGE = 'Пользователь с таким email
 const USER_UNAUTHORIZED_MESSAGE = 'Неправильные email или пароль!';
 const USER_LOGIN_MESSAGE = 'Вход выполнен!';
 const USER_LOGOUT_MESSAGE = 'Выход выполнен!';
+const USER_PASSWORD_WAS_UPDATED = 'Пароль пользователя обновлен!';
 
 const UNAUTHORIZED_MESSAGE = 'Необходима авторизация!';
 
@@ -26,4 +27,5 @@ module.exports = {
   USER_LOGOUT_MESSAGE,
   UNAUTHORIZED_MESSAGE,
   INVALID_URL_MESSAGE,
+  USER_PASSWORD_WAS_UPDATED,
 };

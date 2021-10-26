@@ -4,7 +4,6 @@ const { User } = require('../utils/sequelize');
 
 const BadRequestError = require('../errors/bad-request-err');
 const NotFoundError = require('../errors/not-found-err');
-const ConflictError = require('../errors/conflict-err');
 const Unauthorized = require('../errors/unauthorized-err');
 
 const { getRandomString } = require('../utils/utils');
@@ -19,9 +18,9 @@ const {
 const {
   USER_DATA_IS_MISSING_MESSAGE,
   USER_UNAUTHORIZED_MESSAGE,
-  USER_ALREADY_EXIST_MESSAGE,
-  USER_INVALID_DATA_MESSAGE,
   USER_LOGOUT_MESSAGE,
+  USER_NOT_FOUND_MESSAGE,
+  USER_PASSWORD_WAS_UPDATED,
 } = require('../constants');
 
 function signToken(user) {
@@ -99,7 +98,7 @@ module.exports.getUser = (req, res, next) => {
         return;
       }
       if (!users || !users.length) {
-        throw new NotFoundError('Пользователь не найден');
+        throw new NotFoundError(USER_NOT_FOUND_MESSAGE);
       }
       throw new Error();
     })
@@ -126,7 +125,7 @@ module.exports.updateUserPassword = (req, res, next) => {
               user.mark = getRandomString(6);
               return user.save()
                 .then(() => {
-                  res.send({ message: 'Пароль успешно обновлен' });
+                  res.send({ message: USER_PASSWORD_WAS_UPDATED });
                 })
                 .catch((error) => {
                   throw new Error(error.message);
@@ -137,7 +136,7 @@ module.exports.updateUserPassword = (req, res, next) => {
             });
         }
         if (!users || !users.length) {
-          throw new NotFoundError('Пользователь не найден');
+          throw new NotFoundError(USER_NOT_FOUND_MESSAGE);
         }
         throw new Error();
       })
