@@ -150,7 +150,12 @@ module.exports.validateLogin = [
 ];
 
 module.exports.validateUpdatePassword = [
-  body('newPassword', 'Поле "Пароль" не валидно')
+  body('password', 'Поле "Пароль" не валидно')
+    .not()
+    .isEmpty()
+    .isLength({ min: 8 })
+    .trim(),
+  body('newPassword', 'Поле "Новый пароль" не валидно')
     .not()
     .isEmpty()
     .isLength({ min: 8 })
