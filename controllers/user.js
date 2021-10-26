@@ -93,14 +93,15 @@ module.exports.getUser = (req, res, next) => {
     },
   })
     .then((users) => {
-      if (!users || users.length) {
-        throw new NotFoundError('Пользователь не найден');
-      } else if (users && users.length === 1) {
+      if (users && users.length === 1) {
         const user = users[0];
         res.send({ email: user.email, id: user.id, role: user.role });
-      } else {
-        throw new Error();
+        return;
       }
+      if (!users || !users.length) {
+        throw new NotFoundError('Пользователь не найден');
+      }
+      throw new Error();
     })
     .catch(next);
 };
@@ -116,17 +117,14 @@ module.exports.updateUserPassword = (req, res, next) => {
       },
     })
       .then((users) => {
-        if (!users || users.length) {
-          throw new NotFoundError('Пользователь не найден');
-        }
         if (users && users.length === 1) {
           const user = users[0];
-          bcrypt
+          return bcrypt
             .hash(newPassword, SALT_ROUNDS)
             .then((hash) => {
               user.password = hash;
               user.mark = getRandomString(6);
-              user.save()
+              return user.save()
                 .then(() => {
                   res.send({ message: 'Пароль успешно обновлен' });
                 })
@@ -138,6 +136,10 @@ module.exports.updateUserPassword = (req, res, next) => {
               throw new Error(error.message);
             });
         }
+        if (!users || !users.length) {
+          throw new NotFoundError('Пользователь не найден');
+        }
+        throw new Error();
       })
       .catch(next);
   }

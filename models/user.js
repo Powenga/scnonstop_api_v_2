@@ -12,7 +12,7 @@ module.exports.user = {
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
-      len: [1, 0],
+      len: [8],
     },
   },
   role: {
