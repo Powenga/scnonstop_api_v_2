@@ -133,3 +133,27 @@ module.exports.validateID = [
     .escape(),
   validate,
 ];
+
+module.exports.validateLogin = [
+  body('email', 'Поле "email" не валидно')
+    .not()
+    .isEmpty()
+    .isEmail()
+    .trim()
+    .escape(),
+  body('password', 'Поле "Пароль" не валидно')
+    .not()
+    .isEmpty()
+    .isLength({ min: 8 })
+    .trim(),
+  validate,
+];
+
+module.exports.validateUpdatePassword = [
+  body('newPassword', 'Поле "Пароль" не валидно')
+    .not()
+    .isEmpty()
+    .isLength({ min: 8 })
+    .trim(),
+  validate,
+];

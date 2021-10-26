@@ -8,10 +8,11 @@ const { userRouter } = require('./users');
 const { login, logout } = require('../controllers/user');
 const { sendLoginInfo } = require('../controllers/mail');
 
+const { validateLogin } = require('../middlewares/validator');
+
 const NotFoundError = require('../errors/not-found-err');
 
-// Todo validate this
-router.post('/signin', login, sendLoginInfo);
+router.post('/signin', validateLogin, login, sendLoginInfo);
 router.get('/signout', logout);
 
 router.use('/mail', mailRouter);
