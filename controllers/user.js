@@ -106,8 +106,8 @@ module.exports.getUser = (req, res, next) => {
 };
 
 module.exports.updateUserPassword = (req, res, next) => {
-  const { newPassword } = req.body;
-  if (!newPassword) {
+  const { password, newPassword } = req.body;
+  if (!newPassword || !password) {
     next(new BadRequestError(USER_DATA_IS_MISSING_MESSAGE));
   } else {
     User.findAll({
@@ -118,22 +118,19 @@ module.exports.updateUserPassword = (req, res, next) => {
       .then((users) => {
         if (users && users.length === 1) {
           const user = users[0];
-          return bcrypt
-            .hash(newPassword, SALT_ROUNDS)
-            .then((hash) => {
-              user.password = hash;
-              user.mark = getRandomString(6);
-              return user.save()
-                .then(() => {
-                  res.send({ message: USER_PASSWORD_WAS_UPDATED });
-                })
-                .catch((error) => {
-                  throw new Error(error.message);
-                });
-            })
-            .catch((error) => {
-              throw new Error(error.message);
-            });
+          if (bcrypt.compareSync(password, user.password)) {
+            const hash = bcrypt.hashSync(newPassword, SALT_ROUNDS);
+            user.password = hash;
+            user.mark = getRandomString(6);
+            return user.save()
+              .then(() => {
+                res.send({ message: USER_PASSWORD_WAS_UPDATED });
+              })
+              .catch((error) => {
+                throw new Error(error.message);
+              });
+          }
+          throw new Unauthorized(USER_UNAUTHORIZED_MESSAGE);
         }
         if (!users || !users.length) {
           throw new NotFoundError(USER_NOT_FOUND_MESSAGE);

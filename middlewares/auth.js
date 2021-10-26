@@ -4,7 +4,7 @@ const {
   DEV_SECRET_KEY,
   NODE_ENV,
 } = require('../config');
-const { USER_UNAUTHORIZED_MESSAGE } = require('../constants');
+const { UNAUTHORIZED_MESSAGE } = require('../constants');
 const Unauthorized = require('../errors/unauthorized-err');
 const { User } = require('../utils/sequelize');
 
@@ -36,7 +36,7 @@ module.exports = (req, res, next) => {
         req.user = payload;
         return next();
       }
-      throw new Unauthorized(USER_UNAUTHORIZED_MESSAGE);
+      throw new Unauthorized(UNAUTHORIZED_MESSAGE);
     })
-    .catch(() => res.status(401).send({ message: 'Неоходима авторизация!' }));
+    .catch((error) => res.status(401).send({ message: error.message }));
 };
