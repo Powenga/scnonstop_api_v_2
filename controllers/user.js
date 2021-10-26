@@ -61,7 +61,7 @@ module.exports.login = (req, res, next) => {
         const token = signToken(user);
         res
           .cookie('jwt', token, {
-            maxAge: 3600000 * 24 * 7,
+            maxAge: 3600000 * 24 * 14,
             httpOnly: true,
             sameSite: true,
           })
@@ -83,5 +83,62 @@ module.exports.logout = (req, res, next) => {
       .send({ message: USER_LOGOUT_MESSAGE });
   } catch (err) {
     next(err);
+  }
+};
+
+module.exports.getUser = (req, res, next) => {
+  User.findAll({
+    where: {
+      id: req.user.id,
+    },
+  })
+    .then((users) => {
+      if (!users || users.length) {
+        throw new NotFoundError('Пользователь не найден');
+      } else if (users && users.length === 1) {
+        const user = users[0];
+        res.send({ email: user.email, id: user.id, role: user.role });
+      } else {
+        throw new Error();
+      }
+    })
+    .catch(next);
+};
+
+module.exports.updateUserPassword = (req, res, next) => {
+  const { newPassword } = req.body;
+  if (!newPassword) {
+    next(new BadRequestError(USER_DATA_IS_MISSING_MESSAGE));
+  } else {
+    User.findAll({
+      where: {
+        id: req.user.id,
+      },
+    })
+      .then((users) => {
+        if (!users || users.length) {
+          throw new NotFoundError('Пользователь не найден');
+        }
+        if (users && users.length === 1) {
+          const user = users[0];
+          bcrypt
+            .hash(newPassword, SALT_ROUNDS)
+            .then((hash) => {
+              user.password = hash;
+              user.mark = getRandomString(6);
+              user.save()
+                .then(() => {
+                  res.send({ message: 'Пароль успешно обновлен' });
+                })
+                .catch((error) => {
+                  throw new Error(error.message);
+                });
+            })
+            .catch((error) => {
+              throw new Error(error.message);
+            });
+        }
+      })
+      .catch(next);
   }
 };
