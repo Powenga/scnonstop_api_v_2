@@ -31,8 +31,12 @@ process.on('unhandledRejection', (error) => {
 const app = express();
 
 app.use(cors({
+  credentials: true,
   origin: NODE_ENV === 'production' ? ORIGIN.split(' ') : 'http://localhost:3000',
 }));
+
+// TODO: remove this
+app.use(express.static('public'));
 
 app.use(helmet());
 app.use(cookieParser());

@@ -64,7 +64,7 @@ module.exports.login = (req, res, next) => {
             httpOnly: true,
             sameSite: true,
           })
-          .send({ id: user.id, email: user.email });
+          .send({ id: user.id, email: user.email, role: user.role });
         next();
       })
       .catch(next);
@@ -94,6 +94,7 @@ module.exports.getUser = (req, res, next) => {
     .then((users) => {
       if (users && users.length === 1) {
         const user = users[0];
+        res.set('Cache-Control', 'no-store');
         res.send({ email: user.email, id: user.id, role: user.role });
         return;
       }

@@ -10,7 +10,7 @@ module.exports.sendOrder = (req, res, next) => {
     house,
     apartment,
     userName,
-    phone,
+    userPhone,
     policy,
   } = req.body;
   const text = `Тип техники: ${appType};
@@ -18,7 +18,7 @@ module.exports.sendOrder = (req, res, next) => {
       Описание проблемы: ${problem};
       Адрес: ${street}, д.${house}, кв.${apartment};
       Имя заказчика: ${userName};
-      Телефон: ${phone};
+      Телефон: ${userPhone};
       Согласие с Политикой конфиденциальности ${policy ? 'Да' : 'Нет'}.`;
   const html = `
       <p>Тип техники: ${appType};</p>
@@ -26,7 +26,7 @@ module.exports.sendOrder = (req, res, next) => {
       <p>Описание проблемы: ${problem};</p>
       <p>Адрес: ${street}, д.${house}, кв.${apartment};</p>
       <p>Имя заказчика: ${userName};</p>
-      <p>Телефон: ${phone};</p>
+      <p>Телефон: ${userPhone};</p>
       <p>Согласие с Политикой конфиденциальности ${policy ? 'Да' : 'Нет'}.;</p>`;
   const mailData = {
     from: `${EMAIL_ADDRESS || 'test@example.com'}`,
@@ -45,14 +45,14 @@ module.exports.sendOrder = (req, res, next) => {
 module.exports.sendCallback = (req, res, next) => {
   const {
     userName,
-    phone,
+    userPhone,
     policy,
   } = req.body;
   const text = `Имя заказчика: ${userName};
-    Телефон: ${phone};
+    Телефон: ${userPhone};
     Согласие с Политикой конфиденциальности ${policy ? 'Да' : 'Нет'}.`;
   const html = `<p>Имя заказчика: ${userName};</p>
-    <p>Телефон: ${phone};</p>
+    <p>Телефон: ${userPhone};</p>
     <p>Согласие с Политикой конфиденциальности ${policy ? 'Да' : 'Нет'}.;</p>`;
   const mailData = {
     from: `${EMAIL_ADDRESS || 'test@example.com'}`,

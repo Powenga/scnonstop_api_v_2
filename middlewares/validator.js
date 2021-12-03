@@ -17,7 +17,7 @@ const validateUserData = [
     .isLength({ min: 2, max: 25 })
     .trim()
     .escape(),
-  body('phone', 'Поле "Телефон" не валидно')
+  body('userPhone', 'Поле "Телефон" не валидно')
     .not()
     .isEmpty()
     .isLength({ min: 1, max: 25 })
