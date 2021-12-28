@@ -47,34 +47,16 @@ module.exports.validateSendOrder = [
     .isLength({ min: 1, max: 25 })
     .trim()
     .escape(),
-  body('appMark', 'Поле "Марка техники" не валидно')
-    .not()
-    .isEmpty()
-    .isLength({ min: 1, max: 25 })
-    .trim()
-    .escape(),
   body('problem', 'Поле "Неисправность" не валидно')
     .not()
     .isEmpty()
     .isLength({ min: 3, max: 250 })
     .trim()
     .escape(),
-  body('street', 'Поле "Улица" не валидно')
+  body('address', 'Поле "Адресс" не валидно')
     .not()
     .isEmpty()
-    .isLength({ min: 3, max: 50 })
-    .trim()
-    .escape(),
-  body('house', 'Поле "Дом" не валидно')
-    .not()
-    .isEmpty()
-    .isLength({ min: 3, max: 5 })
-    .trim()
-    .escape(),
-  body('apartment', 'Поле "Квартира" не валидно')
-    .not()
-    .isEmpty()
-    .isLength({ min: 3, max: 5 })
+    .isLength({ min: 3, max: 150 })
     .trim()
     .escape(),
   validateUserData,

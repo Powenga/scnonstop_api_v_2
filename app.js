@@ -35,8 +35,12 @@ app.use(cors({
   origin: NODE_ENV === 'production' ? ORIGIN.split(' ') : 'http://localhost:3000',
 }));
 
-// TODO: remove this
-app.use(express.static('public'));
+app.use((req, res, next) => {
+  if (NODE_ENV !== 'production') {
+    express.static('public');
+  }
+  next();
+});
 
 app.use(helmet());
 app.use(cookieParser());
@@ -49,7 +53,6 @@ app.use('/api', router);
 app.use(errorLogger);
 
 app.use((err, req, res, next) => {
-  console.log(err);
   const { statusCode = 500, message } = err;
   if (res.headerSent) {
     next(err);

@@ -6,9 +6,7 @@ module.exports.sendOrder = (req, res, next) => {
     appType,
     appMark,
     problem,
-    street,
-    house,
-    apartment,
+    address,
     userName,
     userPhone,
     policy,
@@ -16,7 +14,7 @@ module.exports.sendOrder = (req, res, next) => {
   const text = `Тип техники: ${appType};
       Марка: ${appMark};
       Описание проблемы: ${problem};
-      Адрес: ${street}, д.${house}, кв.${apartment};
+      Адрес: ${address};
       Имя заказчика: ${userName};
       Телефон: ${userPhone};
       Согласие с Политикой конфиденциальности ${policy ? 'Да' : 'Нет'}.`;
@@ -24,7 +22,7 @@ module.exports.sendOrder = (req, res, next) => {
       <p>Тип техники: ${appType};</p>
       <p>Марка: ${appMark};</p>
       <p>Описание проблемы: ${problem};</p>
-      <p>Адрес: ${street}, д.${house}, кв.${apartment};</p>
+      <p>Адрес: ${address};</p>
       <p>Имя заказчика: ${userName};</p>
       <p>Телефон: ${userPhone};</p>
       <p>Согласие с Политикой конфиденциальности ${policy ? 'Да' : 'Нет'}.;</p>`;
