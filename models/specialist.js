@@ -8,13 +8,6 @@ module.exports.specialist = {
       len: [2, 60],
     },
   },
-  age: {
-    type: DataTypes.INTEGER(3),
-    allowNull: false,
-    validate: {
-      isInt: true,
-    },
-  },
   about: {
     type: DataTypes.STRING,
     allowNull: false,

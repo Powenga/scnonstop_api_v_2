@@ -92,10 +92,6 @@ module.exports.validateSpecialist = [
     .isLength({ min: 2, max: 60 })
     .trim()
     .escape(),
-  body('age', 'Поле "Возраст" не валидно')
-    .not()
-    .isEmpty()
-    .isInt({ min: 18, max: 100 }),
   body('about', 'Поле "Описание" не валидно')
     .not()
     .isEmpty()

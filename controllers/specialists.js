@@ -29,12 +29,11 @@ function saveSpecialist(specialist, res, next) {
     .save()
     .then((data) => {
       const {
-        id, name, age, about, link,
+        id, name, about, link,
       } = data;
       res.status(200).send({
         id,
         name,
-        age,
         about,
         link,
       });
@@ -47,9 +46,9 @@ module.exports.getAllSpecialists = (req, res, next) => {
     .then((specialists) => {
       if (specialists && specialists.length !== 0) {
         const sendingData = specialists.map(({
-          id, name, age, about, link,
+          id, name, about, link,
         }) => ({
-          id, name, age, about, link,
+          id, name, about, link,
         }));
         res.status(200).send(sendingData);
       } else if (specialists.length === 0) {
@@ -63,12 +62,11 @@ module.exports.getAllSpecialists = (req, res, next) => {
 
 module.exports.createSpecialist = (req, res, next) => {
   const {
-    name, age, about,
+    name, about,
   } = req.body;
 
   Specialist.create({
     name,
-    age,
     about,
   })
     .then((data) => res.status(201).send({ id: data.id }))
@@ -94,11 +92,10 @@ module.exports.updateSpecialist = [
   checkSpecialist,
   (req, res, next) => {
     const {
-      name, age, about,
+      name, about,
     } = req.body;
     const { specialist } = res.locals;
     specialist.name = name;
-    specialist.age = age;
     specialist.about = about;
     saveSpecialist(specialist, res, next);
   },
