@@ -17,8 +17,8 @@ module.exports.specialist = {
   },
   link: {
     type: DataTypes.STRING,
-    // validate: {
-    //   isUrl: true,
-    // },
+    validate: {
+      isUrl: true,
+    },
   },
 };
